@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,7 +24,7 @@ namespace Timer_WinForms
         private void button1_Click(object sender, EventArgs e)
         {
             if (timer1.Enabled) //если таймер работает 
-            {
+            {                
                 timer1.Enabled = false; //то выключить его
                 button1.Text = "Пуск";  //проименовать первую кнопку в Пуск
                 button2.Enabled = true; //сделать доступной кнопку Сброс
@@ -31,7 +32,7 @@ namespace Timer_WinForms
             else //если таймер не работает 
             {
                 timer1.Enabled = true; // то включить его
-                button1.Text = "Пуск"; //проименовать первую кнопку в Стоп  
+                button1.Text = "Стоп"; //проименовать первую кнопку в Стоп  
                 button1.Enabled = true; //и сделать 1-ю кнопку доступной
                 button2.Enabled = false; //кнопку Сброс сделать недоступной
             }
@@ -56,7 +57,7 @@ namespace Timer_WinForms
 
         private void timer1_Tick(object sender, EventArgs e) //событие мигание таймера
         {
-            if (label3.Visible) //есть лейбл мигания видимый
+            if (label3.Visible) //если тикер виден
             {
                 if (s < 59) //если количество секунд меньше 59                    
                 {
@@ -68,14 +69,28 @@ namespace Timer_WinForms
                     else label2.Text = s.ToString();
                 }
                 else //если секунд больше 59
-                { //то начинаем считать минуты
-                    m++; //то кол-во минут увеличить на 1
-                    //при этом если минут меньше 10, то 0 + строку кол-ва минут
-                    if (m < 10) label1.Text = 0 + m.ToString();
-                    //если больше 10 то просто количество минут (int к строке )
-                    label2.Text = m.ToString();
-                }    
+                {
+                    if (m < 59) //если минут меньше 59
+                    {
+                        //то начинаем считать минуты
+                        m++; //то кол-во минут увеличить на 1
+                             //при этом если минут меньше 10, то 0 + строку кол-ва минут
+                        if (m < 10) label1.Text = "0" + m.ToString();
+                        //если больше 10 то просто количество минут (int к строке )
+                        label1.Text = m.ToString();
+
+                        s = 0; //обнулить счетчик секунд
+                        label2.Text = "00"; //установить на счетчике секунд нули
+                    }
+                    else //если минут больше 59
+                    {
+                        m = 0; //обнулить счетчик минут
+                        label1.Text = "00"; //и установить нули на счетчике минут
+                    }
+                }
+                label3.Visible = false; //после прохождения условия сделать тикер невидимым
             }
+            else { label3.Visible = true; } //если тикер невидим, сделать его видимым
         }
 
         public Form1()
