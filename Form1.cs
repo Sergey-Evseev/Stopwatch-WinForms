@@ -77,7 +77,7 @@ namespace Timer_WinForms
                              //при этом если минут меньше 10, то 0 + строку кол-ва минут
                         if (m < 10) label1.Text = "0" + m.ToString();
                         //если больше 10 то просто количество минут (int к строке )
-                        label1.Text = m.ToString();
+                        else label1.Text = m.ToString();
 
                         s = 0; //обнулить счетчик секунд
                         label2.Text = "00"; //установить на счетчике секунд нули
@@ -97,7 +97,7 @@ namespace Timer_WinForms
         {
             InitializeComponent();
             
-            timer1.Interval = 500;
+            timer1.Interval = 500; //интервал обновления в милисекундах 
             m = 0; //обновление показателей
             s = 0;
             ms = 0;
